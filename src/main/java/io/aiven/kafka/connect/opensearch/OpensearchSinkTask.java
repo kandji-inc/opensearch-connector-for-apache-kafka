@@ -167,6 +167,9 @@ public class OpensearchSinkTask extends SinkTask {
     }
 
     private void checkMappingFor(final String index, final SinkRecord record) {
+        if (!config.autoCreateIndices()) {
+            return;
+        }
         if (!config.ignoreSchemaFor(record.topic()) && !indexMappingsCache.contains(index)) {
             if (!client.hasMapping(index)) {
                 LOGGER.info("Create mapping for index {} and schema {}", index, record.valueSchema());
