@@ -61,7 +61,7 @@ public class RecordConverter {
     private final OpensearchSinkConnectorConfig config;
 
     public RecordConverter(final Boolean useCompactMapEntries,
-                           final RecordConverter.BehaviorOnNullValues behaviorOnNullValues) {
+            final RecordConverter.BehaviorOnNullValues behaviorOnNullValues) {
         this(null);
     }
 
@@ -79,8 +79,7 @@ public class RecordConverter {
             schemaType = ConnectSchema.schemaType(key.getClass());
             if (schemaType == null) {
                 throw new DataException(
-                        String.format("Java class %s does not have corresponding schema type.", key.getClass())
-                );
+                        String.format("Java class %s does not have corresponding schema type.", key.getClass()));
             }
         } else {
             schemaType = keySchema.type();
@@ -105,12 +104,17 @@ public class RecordConverter {
                     return null;
                 case DELETE:
                     if (record.key() == null) {
-                        // Since the record key is used as the ID of the index to delete and we don't have a key
+                        // Since the record key is used as the ID of the index to delete and we don't
+                        // have a key
                         // for this record, we can't delete anything anyways, so we ignore the record.
-                        // We can also disregard the value of the ignoreKey parameter, since even if it's true
-                        // the resulting index we'd try to delete would be based solely off topic/partition/
-                        // offset information for the SinkRecord. Since that information is guaranteed to be
-                        // unique per message, we can be confident that there wouldn't be any corresponding
+                        // We can also disregard the value of the ignoreKey parameter, since even if
+                        // it's true
+                        // the resulting index we'd try to delete would be based solely off
+                        // topic/partition/
+                        // offset information for the SinkRecord. Since that information is guaranteed
+                        // to be
+                        // unique per message, we can be confident that there wouldn't be any
+                        // corresponding
                         // index present in ES to delete anyways.
                         return null;
                     }
@@ -128,8 +132,7 @@ public class RecordConverter {
                             record.kafkaOffset(),
                             OpensearchSinkConnectorConfig.BEHAVIOR_ON_NULL_VALUES_CONFIG,
                             BehaviorOnNullValues.FAIL,
-                            BehaviorOnNullValues.IGNORE
-                    ));
+                            BehaviorOnNullValues.IGNORE));
             }
         }
 
@@ -145,7 +148,8 @@ public class RecordConverter {
         return addExternalVersionIfNeeded(new IndexRequest(index)
                 .id(id)
                 .source(payload, XContentType.JSON)
-                .opType(DocWriteRequest.OpType.INDEX), record);
+                .opType(DocWriteRequest.OpType.CREATE), record);
+        // .opType(DocWriteRequest.OpType.INDEX), record);
     }
 
     private DocWriteRequest<?> addExternalVersionIfNeeded(final DocWriteRequest<?> request, final SinkRecord record) {
@@ -173,10 +177,14 @@ public class RecordConverter {
         return new String(rawJsonPayload, StandardCharsets.UTF_8);
     }
 
-    // We need to pre process the Kafka Connect schema before converting to JSON as Elasticsearch
-    // expects a different JSON format from the current JSON converter provides. Rather than
-    // completely rewrite a converter for Elasticsearch, we will refactor the JSON converter to
-    // support customized translation. The pre process is no longer needed once we have the JSON
+    // We need to pre process the Kafka Connect schema before converting to JSON as
+    // Elasticsearch
+    // expects a different JSON format from the current JSON converter provides.
+    // Rather than
+    // completely rewrite a converter for Elasticsearch, we will refactor the JSON
+    // converter to
+    // support customized translation. The pre process is no longer needed once we
+    // have the JSON
     // converter refactored.
     // visible for testing
     Schema preProcessSchema(final Schema schema) {
@@ -331,8 +339,7 @@ public class RecordConverter {
             for (final Map.Entry<?, ?> entry : map.entrySet()) {
                 processedMap.put(
                         preProcessValue(entry.getKey(), keySchema, newSchema.keySchema()),
-                        preProcessValue(entry.getValue(), valueSchema, newValueSchema)
-                );
+                        preProcessValue(entry.getValue(), valueSchema, newValueSchema));
             }
             return processedMap;
         }
@@ -384,7 +391,8 @@ public class RecordConverter {
                 }
             }
 
-            // Overridden here so that ConfigDef.toEnrichedRst shows possible values correctly
+            // Overridden here so that ConfigDef.toEnrichedRst shows possible values
+            // correctly
             @Override
             public String toString() {
                 return validator.toString();
