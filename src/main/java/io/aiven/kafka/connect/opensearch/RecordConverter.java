@@ -153,7 +153,7 @@ public class RecordConverter {
     }
 
     private DocWriteRequest<?> addExternalVersionIfNeeded(final DocWriteRequest<?> request, final SinkRecord record) {
-        if (!config.ignoreKeyFor(record.topic())) {
+        if (!config.ignoreKeyFor(record.topic()) && config.autoCreateIndices()) {
             request.versionType(VersionType.EXTERNAL);
             request.version(record.kafkaOffset());
         }
