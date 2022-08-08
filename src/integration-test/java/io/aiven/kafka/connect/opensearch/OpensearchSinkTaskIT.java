@@ -43,6 +43,7 @@ import org.junit.jupiter.api.Test;
 
 import static io.aiven.kafka.connect.opensearch.OpensearchSinkConnectorConfig.BEHAVIOR_ON_NULL_VALUES_CONFIG;
 import static io.aiven.kafka.connect.opensearch.OpensearchSinkConnectorConfig.DROP_INVALID_MESSAGE_CONFIG;
+import static io.aiven.kafka.connect.opensearch.OpensearchSinkConnectorConfig.AUTO_CREATE_INDICES_CONFIG;
 import static io.aiven.kafka.connect.opensearch.OpensearchSinkConnectorConfig.KEY_IGNORE_CONFIG;
 import static io.aiven.kafka.connect.opensearch.OpensearchSinkConnectorConfig.SCHEMA_IGNORE_CONFIG;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -321,6 +322,7 @@ public class OpensearchSinkTaskIT extends AbstractIT {
         final var props = new HashMap<>(getDefaultProperties());
         props.put(BEHAVIOR_ON_NULL_VALUES_CONFIG, behaviorOnNullValues.name());
         props.put(DROP_INVALID_MESSAGE_CONFIG, "false");
+        props.put(AUTO_CREATE_INDICES_CONFIG, "true");
         props.put(KEY_IGNORE_CONFIG, Boolean.toString(ignoreKey));
         return props;
     }

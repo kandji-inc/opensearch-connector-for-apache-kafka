@@ -171,3 +171,10 @@ Data Conversion
   * Default: fail
   * Valid Values: [ignore, warn, fail]
   * Importance: low
+
+``auto.create.indices``
+  To disable auto creating indices.
+
+  * Type: boolean
+  * Default: true
+  * Importance: low

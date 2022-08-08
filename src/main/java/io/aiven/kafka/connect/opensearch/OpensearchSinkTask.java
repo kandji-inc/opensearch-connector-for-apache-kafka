@@ -156,6 +156,9 @@ public class OpensearchSinkTask extends SinkTask {
 
 
     private void ensureIndexExists(final String index) {
+        if (!config.autoCreateIndices()) {
+            return;
+        }
         if (!indexCache.contains(index)) {
             LOGGER.info("Create index {}", index);
             client.createIndex(index);

@@ -160,6 +160,11 @@ public class OpensearchSinkConnectorConfig extends AbstractConfig {
             + "Opensearch rejects due to version conflicts (if optimistic locking mechanism has been"
             + "activated). Valid options are 'ignore', 'warn', and 'fail'.";
 
+    public static final String AUTO_CREATE_INDICES_CONFIG = "auto.create.indices";
+    private static final String AUTO_CREATE_INDICES_DOC =
+            "Whether to automatically create the destination index if it doesn't exist. "
+                    + "If this is set to ``false``, the task will fail if the index doesn't exist.";
+
     protected static ConfigDef baseConfigDef() {
         final ConfigDef configDef = new ConfigDef();
         addConnectorConfigs(configDef);
@@ -408,7 +413,18 @@ public class OpensearchSinkConnectorConfig extends AbstractConfig {
                 group,
                 ++order,
                 Width.SHORT,
-                "Behavior on document's version conflict (optimistic locking)");
+                "Behavior on document's version conflict (optimistic locking)"
+        ).define(
+                AUTO_CREATE_INDICES_CONFIG,
+                Type.BOOLEAN,
+                false,
+                Importance.LOW,
+                AUTO_CREATE_INDICES_DOC,
+                group,
+                ++order,
+                Width.LONG,
+                "Disable automatic index creation"
+        );
     }
 
     public static final ConfigDef CONFIG = baseConfigDef();
@@ -456,6 +472,10 @@ public class OpensearchSinkConnectorConfig extends AbstractConfig {
 
     public boolean ignoreKey() {
         return getBoolean(OpensearchSinkConnectorConfig.KEY_IGNORE_CONFIG);
+    }
+
+    public boolean autoCreateIndices() {
+        return getBoolean(OpensearchSinkConnectorConfig.AUTO_CREATE_INDICES_CONFIG);
     }
 
     public boolean ignoreSchema() {
