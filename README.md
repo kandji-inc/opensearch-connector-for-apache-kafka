@@ -1,3 +1,12 @@
+# WARNING ABOUT FORK
+
+Fork to attempt to fix various issues with this connector:
+
+- does not work with datastreams
+- issues with concurrency
+- issues with doc versioning
+
+
 # Aiven's OpenSearch® Connector for Apache Kafka®
 
 [![Build Status](https://github.com/aiven/opensearch-connector-for-apache-kafka/actions/workflows/master_push_workflow.yml/badge.svg)](https://github.com/aiven/opensearch-connector-for-apache-kafka/actions)
